@@ -52,10 +52,11 @@ public class LinkedList {
         }
         Node temp = head;
         while (temp != null) {
-            System.out.print(temp.data + " ");
+            System.out.print(temp.data + "-> ");
             temp = temp.next;
 
         }
+        System.out.print("null");
     }
 
     public void add(int idx, int data) {
@@ -278,6 +279,100 @@ public class LinkedList {
         prev.next = null;
     }
 
+    private Node merge(Node head1, Node head2) {
+        Node mergeLL = new Node(-1);
+        Node temp = mergeLL;
+        while (head1 != null && head2 != null) {
+            if (head1.data <= head2.data) {
+                temp.next = head1;
+                head1 = head1.next;
+                temp = temp.next;
+            } else {
+                temp.next = head2;
+                head2 = head2.next;
+                temp = temp.next;
+            }
+
+        }
+        while (head1 != null) {
+            temp.next = head1;
+            head1 = head1.next;
+            temp = temp.next;
+
+        }
+        while (head2 != null) {
+            temp.next = head2;
+            head2 = head2.next;
+            temp = temp.next;
+
+        }
+        return mergeLL.next;
+    }
+
+    private Node getMid(Node head) {
+        Node slow = head;
+        Node fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+        }
+        return slow;
+    }
+
+    public void ZigZag() {
+        // find mid
+        Node slow = head;
+        Node fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;// +1
+            fast = fast.next.next;
+
+        }
+        Node mid = slow;
+
+        // reverse second half
+        Node curr = mid.next;
+        mid.next = null;
+        Node prev = null;
+        Node temp;
+        while (curr != null) {
+            temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+
+        }
+        Node left = head;
+        Node right = prev;
+        Node nextL, nextR;
+        // Alternate merging
+        while (left != null && right != null) {
+            nextL = left.next;
+            left.next = right;
+            nextR = right.next;
+            right.next = nextL;
+            right = nextR;
+            left = nextL;
+
+        }
+    }
+
+    public Node mergeSort(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        // mid find
+        Node mid = getMid(head);
+        // left and right head
+        Node rightHead = mid.next;
+        mid.next = null;
+        Node newleft = mergeSort(head);
+        Node newRight = mergeSort(rightHead);
+        return merge(newleft, newRight);
+
+    }
+
     public static void main(String[] args) {
         // LinkedList ll = new LinkedList();
         // ll.addLast(1);
@@ -288,15 +383,31 @@ public class LinkedList {
         // System.out.println();
         // System.out.println(ll.isPalindrome());
 
-        head = new Node(1);
-        Node temp = new Node(2);
-        head.next = temp;
-        head.next.next = new Node(3);
-        head.next.next.next = temp; // creates cycle
+        // head = new Node(1);
+        // Node temp = new Node(2);
+        // head.next = temp;
+        // head.next.next = new Node(3);
+        // head.next.next.next = temp; // creates cycle
 
+        // // System.out.println(isCycle());
         // System.out.println(isCycle());
-        System.out.println(isCycle());
-        removeCycle();
-        System.out.println(isCycle());
+        // removeCycle();
+        // System.out.println(isCycle());
+        LinkedList ll = new LinkedList();
+        ll.addLast(1);
+        ll.addLast(2);
+        ll.addLast(3);
+        ll.addLast(4);
+        ll.addLast(5);
+        ll.addLast(6);
+
+        ll.Display();
+        // head = ll.mergeSort(head);
+        // System.out.println();
+        // ll.Display();
+        ll.ZigZag();
+        System.out.println();
+        ll.Display();
+
     }
 }
