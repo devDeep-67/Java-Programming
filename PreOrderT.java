@@ -1,7 +1,6 @@
 import java.util.*;
 import java.util.LinkedList;
 
-import javax.sound.sampled.Line;
 
 public class PreOrderT {
 
