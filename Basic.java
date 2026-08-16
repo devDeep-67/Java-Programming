@@ -90,6 +90,7 @@ public class Basic {
         Pen P1 = new Pen("Doms", 3);
         P1.get_innfo();
         Sc.close();
+
     }
 
 }
